@@ -3,9 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guessing Game</title>
+    <title>🎥🍿 Movies & TV Trivia Guessing Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button>Option A</button>
+    <div id="game-container">
+        <h2>🎥🍿 Movies & TV Trivia Guessing Game</h2>
+        <p id="score">Score: 0</p>
+        <p id="question-number">Question 1 of 10</p>
+        <div id="question-container">
+            <h3 id="question">Loading...</h3>
+            <div id="answers"></div>
+        </div>
+        <p id="feedback"></p>
+        <button class="restart" onclick="restartGame()">Restart Game</button>
+    </div>
+    
+    <script>
+        let score = 0;
+        let questionIndex = 0;
+        
+        const questions = [
+            { 
+                question: "What is the highest-grossing movie of all time?", 
+                answers: ["Avatar", "Avengers: Endgame", "Titanic", "Star Wars: The Force Awakens"],
+                correct: 0
+            },
+            {
+                question: "Which TV show features the character Walter White?",
+                answers: ["The Wire", "Better Call Saul", "Breaking Bad", "Mad Men"],
+                correct: 2
+            },
+            {
+                question: "Who directed 'Inception'?",
+                answers: ["Christopher Nolan", "Steven Spielberg", "Quentin Tarantino", "James Cameron"],
+                correct: 0
+            },
+            {
+                question: "Which actor plays Jack Sparrow in 'Pirates of the Caribbean'?",
+                answers: ["Orlando Bloom", "Johnny Depp", "Brad Pitt", "Leonardo DiCaprio"],
+                correct: 1
+            },
+            {
+                question: "Which TV show is set in the Upside Down?",
+                answers: ["The X-Files", "Stranger Things", "Buffy the Vampire Slayer", "Dark"],
+                correct: 1
+            },
+            {
+                question: "Which Marvel movie introduced Thanos?",
+                answers: ["Thor: Ragnarok", "Guardians of the Galaxy", "Avengers: Infinity War", "The Avengers"],
+                correct: 3
+            },
+            {
+                question: "Which animated movie is about a clownfish searching for his son?",
+                answers: ["Finding Nemo", "Shark Tale", "The Little Mermaid", "Moana"],
+                correct: 0
+            },
+            {
+                question: "Who played the Joker in 'The Dark Knight'?",
+                answers: ["Jack Nicholson", "Joaquin Phoenix", "Jared Leto", "Heath Ledger"],
+                correct: 3
+            },
+            {
+                question: "Which sci-fi movie features the character Neo?",
+                answers: ["Interstellar", "Blade Runner", "The Matrix", "Inception"],
+                correct: 2
+            },
+            {
+                question: "What is the name of the spaceship in 'Star Wars'?",
+                answers: ["Starship Enterprise", "Millennium Falcon", "Galactica", "Discovery One"],
+                correct: 1
+            }
+        ];
+        
+        function loadQuestion() {
+            if (questionIndex < questions.length) {
+                let q = questions[questionIndex];
+                document.getElementById("question").innerText = q.question;
+                document.getElementById("question-number").innerText = `Question ${questionIndex + 1} of 10`;
+                document.getElementById("feedback").innerText = "";
+                
+                let answersDiv = document.getElementById("answers");
+                answersDiv.innerHTML = "";
+                
+                q.answers.forEach((answer, i) => {
+                    let button = document.createElement("button");
+                    button.innerText = answer;
+                    button.onclick = () => checkAnswer(i);
+                    answersDiv.appendChild(button);
+                });
+            } else {
+                document.getElementById("question-container").innerHTML = `<h3>Game Over! Your score: ${score} / 10</h3>`;
+            }
+        }
+        
+        function checkAnswer(selectedIndex) {
+            let correctAnswer = questions[questionIndex].answers[questions[questionIndex].correct];
+            if (selectedIndex === questions[questionIndex].correct) {
+                score++;
+                document.body.style.backgroundColor = "#8BC34A";
+                document.getElementById("feedback").innerText = "Correct!";
+            } else {
+                document.body.style.backgroundColor = "#FF5252";
+                document.getElementById("feedback").innerText = `Wrong! The correct answer was: ${correctAnswer}`;
+            }
+            setTimeout(() => document.body.style.backgroundColor = "#f4f4f4", 1500);
+            
+            document.getElementById("score").innerText = `Score: ${score}`;
+            questionIndex++;
+            setTimeout(loadQuestion, 2000);
+        }
+        
+        function restartGame() {
+            score = 0;
+            questionIndex = 0;
+            document.body.style.backgroundColor = "#f4f4f4";
+            document.getElementById("score").innerText = `Score: ${score}`;
+            document.getElementById("question-number").innerText = "Question 1 of 10";
+            document.getElementById("question-container").innerHTML = '<h3 id="question">Loading...</h3><div id="answers"></div>';
+            document.getElementById("feedback").innerText = "";
+            loadQuestion();
+        }
+        
+        loadQuestion();
+    </script>
 </body>
 </html>
