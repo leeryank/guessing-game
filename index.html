@@ -82,13 +82,16 @@
                 document.getElementById("question").innerText = q.question;
                 document.getElementById("question-number").innerText = `Question ${questionIndex + 1} of 10`;
                 document.getElementById("feedback").innerText = "";
-                
+
                 let answersDiv = document.getElementById("answers");
                 answersDiv.innerHTML = "";
-                
+
+                const buttonColors = ["#e74c3c", "#3498db", "#2ecc71", "#f1c40f"]; // Different colors for answer buttons
+
                 q.answers.forEach((answer, i) => {
                     let button = document.createElement("button");
                     button.innerText = answer;
+                    button.style.backgroundColor = buttonColors[i % buttonColors.length]; // Assign a unique color
                     button.onclick = () => checkAnswer(i);
                     answersDiv.appendChild(button);
                 });
@@ -96,6 +99,7 @@
                 document.getElementById("question-container").innerHTML = `<h3>Game Over! Your score: ${score} / 10</h3>`;
             }
         }
+
         
         function checkAnswer(selectedIndex) {
             let correctAnswer = questions[questionIndex].answers[questions[questionIndex].correct];
