@@ -99,6 +99,12 @@
         
         function checkAnswer(selectedIndex) {
             let correctAnswer = questions[questionIndex].answers[questions[questionIndex].correct];
+
+            // Disable all answer buttons
+            document.querySelectorAll("#answers button").forEach(button => {
+                button.disabled = true;
+            });
+
             if (selectedIndex === questions[questionIndex].correct) {
                 score++;
                 document.body.style.backgroundColor = "#8BC34A";
@@ -107,10 +113,12 @@
                 document.body.style.backgroundColor = "#FF5252";
                 document.getElementById("feedback").innerText = `Wrong! The correct answer was: ${correctAnswer}`;
             }
+
             setTimeout(() => document.body.style.backgroundColor = "#f4f4f4", 1500);
-            
+    
             document.getElementById("score").innerText = `Score: ${score}`;
             questionIndex++;
+    
             setTimeout(loadQuestion, 2000);
         }
         
