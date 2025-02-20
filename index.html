@@ -8,6 +8,9 @@
 </head>
 <body>
     <div id="game-container">
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>        
         <h2>🎥🍿 Movies & TV Trivia Guessing Game</h2>
         <p id="score">Score: 0</p>
         <p id="question-number">Question 1 of 10</p>
@@ -91,14 +94,19 @@
                 q.answers.forEach((answer, i) => {
                     let button = document.createElement("button");
                     button.innerText = answer;
-                    button.style.backgroundColor = buttonColors[i % buttonColors.length]; // Assign a unique color
+                    button.style.backgroundColor = buttonColors[i % buttonColors.length];
                     button.onclick = () => checkAnswer(i);
                     answersDiv.appendChild(button);
                 });
+
+                // Update progress bar
+                document.getElementById("progress-bar").style.width = `${(questionIndex / questions.length) * 100}%`;
             } else {
                 document.getElementById("question-container").innerHTML = `<h3>Game Over! Your score: ${score} / 10</h3>`;
+                document.getElementById("progress-bar").style.width = "100%"; // Full progress at the end
             }
         }
+
 
         
         function checkAnswer(selectedIndex) {
@@ -111,31 +119,35 @@
 
             if (selectedIndex === questions[questionIndex].correct) {
                 score++;
-                document.body.style.backgroundColor = "#8BC34A";
+                document.body.style.backgroundColor = "#4CAF50"; // Green for correct
                 document.getElementById("feedback").innerText = "Correct!";
             } else {
-                document.body.style.backgroundColor = "#FF5252";
+                document.body.style.backgroundColor = "#E53935"; // Red for incorrect
                 document.getElementById("feedback").innerText = `Wrong! The correct answer was: ${correctAnswer}`;
             }
 
-            setTimeout(() => document.body.style.backgroundColor = "#f4f4f4", 1500);
-    
+            setTimeout(() => {
+                document.body.style.backgroundColor = "#121212"; // Restore dark theme
+            }, 1500);
+
             document.getElementById("score").innerText = `Score: ${score}`;
             questionIndex++;
-    
+
             setTimeout(loadQuestion, 2000);
         }
+
         
         function restartGame() {
             score = 0;
             questionIndex = 0;
-            document.body.style.backgroundColor = "#f4f4f4";
+            document.body.style.backgroundColor = "#121212"; // Ensure dark mode stays
             document.getElementById("score").innerText = `Score: ${score}`;
             document.getElementById("question-number").innerText = "Question 1 of 10";
             document.getElementById("question-container").innerHTML = '<h3 id="question">Loading...</h3><div id="answers"></div>';
             document.getElementById("feedback").innerText = "";
             loadQuestion();
         }
+
         
         loadQuestion();
     </script>
